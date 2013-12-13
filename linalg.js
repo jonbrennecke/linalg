@@ -1,10 +1,5 @@
 var linalg = linalg || {NAME:'Linear Algebra namespace'};
 
-// small utility function for inline creation of arrays of length 'b' filled with value 'c'
-function fill(b,c){
-	a=[]; while(b--){a[b]=c} return a
-}
-
 // return u+v
 linalg.add = function(u,v){
 	return (function(i,a){while(i--){a[i]+=v[i]}return a})(u.length,u.slice())
@@ -21,15 +16,31 @@ linalg.cross = function(u,v){
 	return [u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]]
 }
 
-// return the dot product of the vectors u and v
-linalg.dot = function(u,v){
-	return (function(a,i){while(i--){a+=u[i]*v[i]}return a})(0,u.length)
+// return a matrix with the input vector 'v' in the diagonal 
+linalg.diag = function(v){
+	return (function(a,i){
+		while(i--){
+			a[i]=fill(v.length,0);
+			a[i][i]=v[i];
+		}
+		return a
+	})([],v.length)
 }
 
 // return the euclidean distance between the vectors u and v
 linalg.dist = function(u,v){
 	s=linalg.sub(u,v);
 	return linalg.dot(s,linalg.transpose(s))
+}
+
+// return the dot product of the vectors u and v
+linalg.dot = function(u,v){
+	return (function(a,i){while(i--){a+=u[i]*v[i]}return a})(0,u.length)
+}
+
+// return an array of size 's' filled with 'b'
+linalg.fill = function(b,s){
+	a=[]; while(b--){a[b]=s} return a
 }
 
 // orthogonalize or orthonormalize a matrix (or a set of vectors) 'v' by the Gram-Schmidt process
@@ -66,7 +77,12 @@ linalg.projScalar = function(u,v){
 
 // return the vector projection of vector u onto v
 linalg.proj = function(u,v){
-	return (function(i,a,s){while(i--){a[i]*=s}return a})(u.length,linalg.normalize(v.slice()),linalg.projScalar(u.slice(),v.slice()))
+	return (function(i,a,s){
+		while(i--){
+			a[i]*=s
+		}
+		return a
+	})(u.length,linalg.normalize(v.slice()),linalg.projScalar(u.slice(),v.slice()))
 }
 
 // reshape a matrix
@@ -81,7 +97,11 @@ linalg.shape = function(m){
 
 // return a vector 'v' ssubdivided by step 's'
 linalg.subdiv = function(v,s){
-	return (function(i,a){while(i--){a[i]=v.slice(i*s,(i+1)*s)}return a})(Math.floor(v.length/s),[])    
+	return (function(i,a){
+		while(i--){
+			a[i]=v.slice(i*s,(i+1)*s)
+		}
+		return a})(Math.floor(v.length/s),[])    
 }
 
 // return u-v
@@ -98,10 +118,10 @@ linalg.sum = function(v){
 linalg.transpose = function(v){
 	s = linalg.shape(v);
 	l = s[1]*s[0];
-	return (function(a,k){
-		for(var i=0;i<l;i++){
+	return (function(a,i){
+		while(i--){
 			a[i!=l-1?(s[0]*i)%(l-1):l-1]=v[Math.floor(i/s[1])][i%s[1]];
 		}
 		return linalg.subdiv(a,2)
-	})(fill(l,0),v.length)
+	})(linalg.fill(l,0),l)
 }
