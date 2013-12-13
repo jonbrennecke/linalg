@@ -1,5 +1,10 @@
 var linalg = linalg || {NAME:'Linear Algebra namespace'};
 
+// small utility function for inline creation of arrays of length 'b' filled with value 'c'
+function fill(b,c){
+	a=[]; while(b--){a[b]=c} return a
+}
+
 // return u+v
 linalg.add = function(u,v){
 	return (function(i,a){while(i--){a[i]+=v[i]}return a})(u.length,u.slice())
@@ -19,20 +24,6 @@ linalg.cross = function(u,v){
 // return the dot product of the vectors u and v
 linalg.dot = function(u,v){
 	return (function(a,i){while(i--){a+=u[i]*v[i]}return a})(0,u.length)
-}
-
-// return the transpose of a vector (or matrix) v
-linalg.transpose = function(v){
-	return (function(a,k){
-		for(var i=0;i<k;i++){
-			// console.log(v[i]);
-			// a[i]=[v[i]]
-			// for(var j=0;j<v[i].length;j++){
-			// 	console.log(v[i][j])
-			// }
-		}
-		return a
-	})([],v.length)
 }
 
 // return the euclidean distance between the vectors u and v
@@ -78,6 +69,21 @@ linalg.proj = function(u,v){
 	return (function(i,a,s){while(i--){a[i]*=s}return a})(u.length,linalg.normalize(v.slice()),linalg.projScalar(u.slice(),v.slice()))
 }
 
+// reshape a matrix
+linalg.reshape = function(m){
+
+}
+
+// return the shape of a matrix m as the array [m,n]
+linalg.shape = function(m){
+	return [m.length,m[1].length]
+}
+
+// return a vector 'v' ssubdivided by step 's'
+linalg.subdiv = function(v,s){
+	return (function(i,a){while(i--){a[i]=v.slice(i*s,(i+1)*s)}return a})(Math.floor(v.length/s),[])    
+}
+
 // return u-v
 linalg.sub = function(u,v){
 	return (function(i,a){while(i--){a[i]-=v[i]}return a})(u.length,u.slice())
@@ -88,7 +94,14 @@ linalg.sum = function(v){
 	return (function(a,i){while(i--){a+=v[i]}return a})(0,v.length);
 }
 
-// // 
-// linalg.diag = function(v){
-
-// }
+// return the transpose of a vector (or matrix) v
+linalg.transpose = function(v){
+	s = linalg.shape(v);
+	l = s[1]*s[0];
+	return (function(a,k){
+		for(var i=0;i<l;i++){
+			a[i!=l-1?(s[0]*i)%(l-1):l-1]=v[Math.floor(i/s[1])][i%s[1]];
+		}
+		return linalg.subdiv(a,2)
+	})(fill(l,0),v.length)
+}
