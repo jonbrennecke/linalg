@@ -1,0 +1,28 @@
+{
+  "name": "linalg",
+  "version": "0.0.0",
+  "description": "linear algebra in pure javascript",
+  "main": "linalg.js",
+  "dependencies": {
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonbrennecke/linalg"
+  },
+  "keywords": [
+    "linear",
+    "algebra",
+    "math"
+  ],
+  "author": "jon brennecke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonbrennecke/linalg/issues"
+  },
+  "homepage": "https://github.com/jonbrennecke/linalg"
+}
