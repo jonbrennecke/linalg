@@ -20,9 +20,9 @@
 (function ( mod ) {
 
 	if ( typeof module === "object" && typeof module.exports === "object" ) // CommonJS, Node
-		module.exports = mod(require('underscore'),require( __dirname + "/../linalg/linalg" ));
+		module.exports = mod(require('underscore'),require( __dirname + "/linalg" ));
 	else if (typeof define == "function" && define.amd) // AMD
-		return define(["underscore", __dirname + "/../linalg/linalg"], mod);
+		return define(["underscore", __dirname + "/linalg"], mod);
 	else // normal browser env
 		this.svd = mod( _, linalg )();
 
