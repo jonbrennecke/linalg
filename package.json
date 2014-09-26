@@ -1,5 +1,5 @@
 {
-  "name": "linalg",
+  "name": "node-linalg",
   "version": "0.0.0",
   "description": "linear algebra in pure javascript",
   "main": "linalg.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonbrennecke/linalg"
+    "url": "https://github.com/jonbrennecke/node-linalg"
   },
   "keywords": [
     "linear",

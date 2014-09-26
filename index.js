@@ -33,6 +33,25 @@
 		"float64" : Float64Array,	
 	}); 
 
+	/**
+	 * behaves pretty much the same as Python's 'range' function
+	 *
+	 * returns [a,b) (inclusive a, but exclusive b)
+	 *
+	 * TODO implement step value
+	 *
+	 */
+	function range( a, b ) {
+		if ( arguments.length == 1 ) {
+			var b = a;
+			a = 0;
+		}
+
+		return zeros(b-a).map(function(val,i){
+			return a+i[1];
+		})
+	}
+
 
 	/**
 	 * we have 'isArray' from underscore, but Javascript also supports typed arrays.
@@ -167,6 +186,21 @@
 	 */
 	function zeros ( n ) {
 		return new Matrix(ndarray( _.isNumber(n) ? [n] : n))
+	}
+
+	/**
+	 * find all the indices of a certain value in a Matrix
+	 *
+	 * :param A - a matrix
+	 * :param b - a value
+	 * :return - Matrix of found values
+	 */
+	function find ( A, b ) {
+		var found = [];
+		A.forEach(function ( val, idx ) {
+			if ( val === b ) found.push(idx); 
+		});
+		return new Matrix(found);
 	}
 
 
@@ -616,6 +650,8 @@
 		rand : rand,
 		diag : diag,
 		dim : dim,
+		find : find,
+		range : range,
 		flatten : flatten
 	}
 });
